@@ -13,6 +13,21 @@ def get_data(log_row,simbol):
         return False
     return log_row[lim_one+1:lim_two]
 
+def get_status_size(log_row:str) -> list:
+    sts_sz=log_row.split("\"")[2].strip().split()
+    return sts_sz
+
+def get_tokens(log:str)->dict:
+    partes = log.split(" ")
+    ip = partes[0]
+    user = partes[1]
+    indent = partes[2] if len(partes) > 2 else None
+    return {'ip': ip, 'user': user, 'indent': indent}
+
+def get_req(log_row:str)->dict:
+    parts = log_row.split("\"")
+    return {"referrer":parts[3],"user_agent":parts[5]}
+
 def get_request_regex(log_row):
     match=re.search(r'"([A-Z]+ \/[^ ]+ HTTP\/[0-9.]+)"', log_row)
     return match.group(1) if match else False
